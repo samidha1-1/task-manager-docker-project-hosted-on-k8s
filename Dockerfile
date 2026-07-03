@@ -1,13 +1,34 @@
-FROM python:3.12
+# FROM python:3.12 
 
-WORKDIR /app
+# WORKDIR /app 
+
+# COPY requirements.txt . 
+
+# RUN  pip install --no-cache-dir -r requirements.txt 
+
+# COPY app/  . 
+
+# EXPOSE 5000
+
+# CMD ["python" , "app.py"]
+
+FROM python:3.12 AS builder 
+
+WORKDIR /app 
 
 COPY requirements.txt .
 
-RUN  pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt 
 
-COPY app/  .
+FROM python:3.12-slim
 
-EXPOSE 5000
+WORKDIR /app
 
-CMD ["python" , "app.py"]
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+
+COPY app/ . 
+
+EXPOSE 5000 
+
+CMD ["python", "app.py"]
+
