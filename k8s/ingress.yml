@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-task-manager
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.samidhawani.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: task-service
+            port:
+              number: 80
+
+  - host: mysql.samidhawani.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mysql
+            port:
+              number: 3306
